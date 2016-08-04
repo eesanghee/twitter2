@@ -8,6 +8,7 @@ var logger = morgan('dev');
 var fs = require('fs');
 var path = require('path'); //tool for dealing with relative and absolute paths
 var mime = require('mime');
+var bodyParser = require('body-parser');
 
 app.set('views', __dirname + '/views'); // point res.render to the proper directory
 app.set('view engine', 'html'); // have res.render work with html files
@@ -16,6 +17,8 @@ app.engine('html', swig.renderFile); // when giving html files to res.render, te
 app.use(logger); //same logic as lines directly below
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(bodyParser.urlencoded()); // for HTML form submits //for html form submits
 
 app.use('/', routes);
 
