@@ -2,9 +2,10 @@ var express = require( 'express' );
 var router = express.Router();
 var tweetBank = require('../tweetBank');
 var bodyParser = require('body-parser');
-var urlEncodedParser = bodyParser.urlencoded({extended: false});
+var urlEncodedParser = bodyParser.urlencoded({extended: true});
 
 router.get('/', function(req, res){
+	console.log('main')
 	var tweets = tweetBank.list();
 	res.render('index', {title: 'Twitter.js',tweets: tweets, showForm: true, userName: req.params.name});
 });
@@ -15,12 +16,14 @@ router.get('/users/:name', function(req, res, next){
 })
 
 router.get('/tweets/:id', function(req,res, next){
+	console.log('tweets')
 	var tweetsWithThatId = tweetBank.find({id: +req.params.id});
 	res.render('index', {title: 'Twitter.js', tweets: tweetsWithThatId});
 })
 
 
-router.post('/tweets',urlEncodedParser, function(req,res){
+router.post('/tweets', urlEncodedParser, function(req,res){
+	console.log('posting: ', req.body)
 	var name = req.body.name;
 	var text = req.body.text;
 	var list = tweetBank.find({name: name});
